@@ -12,6 +12,11 @@ from src.reporter import (
     save_report_to_file,
 )
 
+from src.normalizer import normalize_extension_name
+
+print(normalize_extension_name("rv_zba"))
+print(normalize_extension_name("RV64_ZBB"))
+print(normalize_extension_name("Zicsr"))
 
 def main():
 
