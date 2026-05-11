@@ -55,6 +55,21 @@ def main():
         "output/summary.txt",
     )
 
+from src.manual_parser import (
+    extract_extensions_from_manual,
+)
+
+manual_extensions = (
+    extract_extensions_from_manual(
+        "riscv-isa-manual/src"
+    )
+)
+
+print("\nManual Extensions")
+print("-" * 40)
+
+for extension in sorted(manual_extensions):
+    print(extension)
 
 if __name__ == "__main__":
     main()
