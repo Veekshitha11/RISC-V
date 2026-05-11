@@ -2,6 +2,9 @@
 __pycache__/
 *.pyc
 
+# Pytest cache
+.pytest_cache/
+
 # Virtual environments
 venv/
 .env/
@@ -13,7 +16,8 @@ venv/
 .DS_Store
 Thumbs.db
 
-# Generated output files
+# Generated outputs
 output/*.txt
 
+# External repository
 riscv-isa-manual/

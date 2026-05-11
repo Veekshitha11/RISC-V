@@ -1,55 +1,70 @@
 # RISC-V Instruction Set Explorer
 
-
 ## Project Description
 
-A metadata exploration tool for parsing and analyzing RISC-V instruction-extension relationships from the RISC-V Extensions Landscape repository.
+A metadata exploration and reconciliation tool for parsing and analyzing RISC-V instruction-extension relationships from the RISC-V Extensions Landscape repository and the official RISC-V ISA manual.
+
+---
 
 ## Implemented Features
 
-- Parse instruction metadata from instr_dict.json
+### Tier 1
+
+- Parse instruction metadata from `instr_dict.json`
 - Group instructions by extension tags
 - Generate extension summary reports
 - Detect instructions belonging to multiple extensions
-- Export reports to output/summary.txt
 
+### Tier 2
 
-## Tier 2 Features
-
-- Extract extension references from ISA manual AsciiDoc sources
+- Extract extension references from ISA manual AsciiDoc files
 - Normalize extension naming across repositories
-- Cross-reference instruction metadata against ISA manual references
-- Detect unmatched extensions between datasets
+- Cross-reference extension metadata between datasets
+- Detect unmatched extensions between the ISA manual and instruction metadata
 
+### Tier 3
 
-## Project Structure
+- Unit tests using `pytest`
+- Extension relationship graph generation
+- Shared instruction dependency visualization
 
-- src/parser.py      -> parsing and grouping logic
-- src/reporter.py    -> report generation
-- main.py            -> orchestration pipeline
+---
 
-## How To Run
- 
- ```bash
-py main.py
-```
+## Architecture
 
-## Tests
+- `parser.py` → instruction parsing and grouping
+- `reporter.py` → Tier-1 report generation
+- `normalizer.py` → canonical extension normalization
+- `manual_parser.py` → ISA manual extension extraction
+- `cross_reference.py` → extension reconciliation and mismatch reporting
+- `graph_generator.py` → extension relationship graph generation
 
-Run tests using:
+---
 
-```bash
-pytest
+## Design Decisions
 
+- Extension names are normalized before cross-referencing
+- Instructions are modeled as many-to-many relationships
+- ISA manual extraction uses lightweight regex parsing instead of full AsciiDoc parsing
+- Report generation is separated from parsing logic for modularity
+
+---
 
 ## Assumptions
 
-- Instructions without extension tags are skipped
-- Extension tags are treated as case-sensitive
+- Extension tags are treated as case-insensitive after normalization
+- Some regex extraction noise from ISA manual sources is filtered explicitly
+- Instructions without extension metadata are ignored
 
-## Design Notes
+---
 
-- Instructions were modeled as a many-to-many relationship because some instructions belong to multiple extensions.
+## Project Structure
 
-
-
+```text
+src/
+tests/
+data/
+output/
+main.py
+requirements.txt
+pytest.ini
