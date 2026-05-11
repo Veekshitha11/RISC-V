@@ -33,6 +33,15 @@ A metadata exploration tool for parsing and analyzing RISC-V instruction-extensi
  ```bash
 py main.py
 ```
+
+## Tests
+
+Run tests using:
+
+```bash
+pytest
+
+
 ## Assumptions
 
 - Instructions without extension tags are skipped
