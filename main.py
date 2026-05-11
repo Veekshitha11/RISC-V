@@ -6,6 +6,12 @@ from src.parser import (
     find_multi_extension_instructions,
 )
 
+from src.reporter import (
+    generate_extension_summary,
+    generate_multi_extension_report,
+    save_report_to_file,
+)
+
 
 def main():
 
@@ -23,34 +29,26 @@ def main():
         )
     )
 
-    print("\nExtension Summary")
-    print("-" * 55)
-
-    for extension in sorted(extension_groups):
-
-        instructions = extension_groups[extension]
-
-        print(
-            f"{extension} | "
-            f"{len(instructions)} instructions | "
-            f"e.g. {instructions[0]}"
+    extension_summary = (
+        generate_extension_summary(
+            extension_groups
         )
+    )
 
-    print("\nInstructions With Multiple Extensions")
-    print("-" * 55)
+    multi_extension_report = (
+        generate_multi_extension_report(
+            multi_extension_instructions
+        )
+    )
 
-    if not multi_extension_instructions:
-        print("None found")
+    print(extension_summary)
+    print(multi_extension_report)
 
-    else:
-        for instruction, extensions in (
-            multi_extension_instructions.items()
-        ):
-
-            print(
-                f"{instruction} -> "
-                f"{', '.join(extensions)}"
-            )
+    save_report_to_file(
+        extension_summary,
+        multi_extension_report,
+        "output/summary.txt",
+    )
 
 
 if __name__ == "__main__":
