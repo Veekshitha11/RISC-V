@@ -13,6 +13,15 @@ A metadata exploration tool for parsing and analyzing RISC-V instruction-extensi
 - Detect instructions belonging to multiple extensions
 - Export reports to output/summary.txt
 
+
+## Tier 2 Features
+
+- Extract extension references from ISA manual AsciiDoc sources
+- Normalize extension naming across repositories
+- Cross-reference instruction metadata against ISA manual references
+- Detect unmatched extensions between datasets
+
+
 ## Project Structure
 
 - src/parser.py      -> parsing and grouping logic
