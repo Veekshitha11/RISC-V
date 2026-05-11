@@ -1,4 +1,8 @@
 
+"""
+Cross-reference normalized extension names between datasets.
+"""
+
 from src.normalizer import (
     normalize_extension_name,
 )

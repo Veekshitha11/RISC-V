@@ -1,11 +1,14 @@
-# src/normalizer.py
+
+"""
+Normalize extension names across different metadata sources.
+"""
 
 import re
 
 
 def normalize_extension_name(extension_name: str) -> str:
     """
-    Normalize extension names across different sources.
+    Normalize extension names into canonical form.
 
     Examples:
     rv_zba     -> zba

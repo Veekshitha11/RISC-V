@@ -1,4 +1,7 @@
-# src/manual_parser.py
+
+"""
+Extract extension references from ISA manual AsciiDoc files.
+"""
 
 import re
 from pathlib import Path
