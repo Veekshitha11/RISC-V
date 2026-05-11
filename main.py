@@ -1,4 +1,8 @@
 # main.py
+from src.graph_generator import (
+    build_extension_graph,
+    generate_graph_report,
+)
 
 from src.parser import (
     load_instruction_data,
@@ -99,6 +103,28 @@ def main():
 
         file.write(cross_reference_report)
 
+        extension_graph = (
+        build_extension_graph(
+            instruction_data
+        )
+    )
+
+    graph_report = (
+        generate_graph_report(
+            extension_graph
+        )
+    )
+
+    print()
+    print(graph_report)
+
+    with open(
+        "output/extension_graph.txt",
+        "w",
+        encoding="utf-8",
+    ) as file:
+
+        file.write(graph_report)
 
 if __name__ == "__main__":
     main()
