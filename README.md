@@ -24,6 +24,10 @@ A metadata exploration tool for parsing and analyzing RISC-V instruction-extensi
  ```bash
 py main.py
 ```
+## Assumptions
+
+- Instructions without extension tags are skipped
+- Extension tags are treated as case-sensitive
 
 
 
