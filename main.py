@@ -12,14 +12,19 @@ from src.reporter import (
     save_report_to_file,
 )
 
-from src.normalizer import normalize_extension_name
+from src.manual_parser import (
+    extract_extensions_from_manual,
+)
 
-print(normalize_extension_name("rv_zba"))
-print(normalize_extension_name("RV64_ZBB"))
-print(normalize_extension_name("Zicsr"))
+from src.cross_reference import (
+    normalize_json_extensions,
+    cross_reference_extensions,
+)
+
 
 def main():
 
+    # Tier 1 parsing pipeline
     instruction_data = load_instruction_data(
         "data/instr_dict.json"
     )
@@ -55,21 +60,51 @@ def main():
         "output/summary.txt",
     )
 
-from src.manual_parser import (
-    extract_extensions_from_manual,
-)
-
-manual_extensions = (
-    extract_extensions_from_manual(
-        "riscv-isa-manual/src"
+    # Tier 2 ISA manual extraction
+    manual_extensions = (
+        extract_extensions_from_manual(
+            "riscv-isa-manual/src"
+        )
     )
-)
 
-print("\nManual Extensions")
-print("-" * 40)
+    print("\nManual Extensions")
+    print("-" * 40)
 
-for extension in sorted(manual_extensions):
-    print(extension)
+    for extension in sorted(manual_extensions):
+        print(extension)
+
+    # Cross-reference pipeline
+    json_extensions = (
+        normalize_json_extensions(
+            extension_groups
+        )
+    )
+
+    cross_reference_results = (
+        cross_reference_extensions(
+            json_extensions,
+            manual_extensions,
+        )
+    )
+
+    print("\nCross Reference Summary")
+    print("-" * 55)
+
+    print(
+        f"Matched Extensions: "
+        f"{len(cross_reference_results['matched'])}"
+    )
+
+    print(
+        f"JSON Only Extensions: "
+        f"{len(cross_reference_results['json_only'])}"
+    )
+
+    print(
+        f"Manual Only Extensions: "
+        f"{len(cross_reference_results['manual_only'])}"
+    )
+
 
 if __name__ == "__main__":
     main()
