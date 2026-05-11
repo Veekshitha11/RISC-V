@@ -19,6 +19,7 @@ from src.manual_parser import (
 from src.cross_reference import (
     normalize_json_extensions,
     cross_reference_extensions,
+    generate_cross_reference_report,
 )
 
 
@@ -52,6 +53,7 @@ def main():
     )
 
     print(extension_summary)
+    print()
     print(multi_extension_report)
 
     save_report_to_file(
@@ -60,20 +62,13 @@ def main():
         "output/summary.txt",
     )
 
-    # Tier 2 ISA manual extraction
+    # Tier 2 ISA extraction
     manual_extensions = (
         extract_extensions_from_manual(
             "riscv-isa-manual/src"
         )
     )
 
-    print("\nManual Extensions")
-    print("-" * 40)
-
-    for extension in sorted(manual_extensions):
-        print(extension)
-
-    # Cross-reference pipeline
     json_extensions = (
         normalize_json_extensions(
             extension_groups
@@ -87,23 +82,22 @@ def main():
         )
     )
 
-    print("\nCross Reference Summary")
-    print("-" * 55)
-
-    print(
-        f"Matched Extensions: "
-        f"{len(cross_reference_results['matched'])}"
+    cross_reference_report = (
+        generate_cross_reference_report(
+            cross_reference_results
+        )
     )
 
-    print(
-        f"JSON Only Extensions: "
-        f"{len(cross_reference_results['json_only'])}"
-    )
+    print()
+    print(cross_reference_report)
 
-    print(
-        f"Manual Only Extensions: "
-        f"{len(cross_reference_results['manual_only'])}"
-    )
+    with open(
+        "output/cross_reference_report.txt",
+        "w",
+        encoding="utf-8",
+    ) as file:
+
+        file.write(cross_reference_report)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+# src/cross_reference.py
 
 """
 Cross-reference normalized extension names between datasets.
@@ -54,3 +55,64 @@ def cross_reference_extensions(
         "json_only": json_only,
         "manual_only": manual_only,
     }
+
+
+def generate_cross_reference_report(
+    cross_reference_results: dict,
+) -> str:
+
+    matched = sorted(
+        cross_reference_results["matched"]
+    )
+
+    json_only = sorted(
+        cross_reference_results["json_only"]
+    )
+
+    manual_only = sorted(
+        cross_reference_results["manual_only"]
+    )
+
+    lines = []
+
+    lines.append(
+        "Cross Reference Summary"
+    )
+
+    lines.append("-" * 55)
+
+    lines.append(
+        f"Matched Extensions: {len(matched)}"
+    )
+
+    lines.append(
+        f"JSON Only Extensions: {len(json_only)}"
+    )
+
+    lines.append(
+        f"Manual Only Extensions: {len(manual_only)}"
+    )
+
+    lines.append("")
+
+    lines.append(
+        "JSON Only Extensions"
+    )
+
+    lines.append("-" * 55)
+
+    for extension in json_only:
+        lines.append(extension)
+
+    lines.append("")
+
+    lines.append(
+        "Manual Only Extensions"
+    )
+
+    lines.append("-" * 55)
+
+    for extension in manual_only:
+        lines.append(extension)
+
+    return "\n".join(lines)

@@ -1,3 +1,4 @@
+# src/manual_parser.py
 
 """
 Extract extension references from ISA manual AsciiDoc files.
@@ -27,6 +28,28 @@ def extract_extensions_from_manual(
         r"\b(?:Z[a-zA-Z0-9]+|[MFDVCAHQS])\b"
     )
 
+    valid_prefixes = (
+        "z",
+        "m",
+        "f",
+        "d",
+        "v",
+        "s",
+        "a",
+        "c",
+        "h",
+        "q",
+    )
+
+    ignored_terms = {
+        "zero",
+        "zeroes",
+        "zeros",
+        "zhang",
+        "zabrocki",
+        "zandijk",
+    }
+
     for adoc_file in adoc_files:
 
         try:
@@ -48,6 +71,17 @@ def extract_extensions_from_manual(
                     match
                 )
             )
+
+            if len(normalized) < 2:
+                continue
+
+            if normalized in ignored_terms:
+                continue
+
+            if not normalized.startswith(
+                valid_prefixes
+            ):
+                continue
 
             extension_names.add(normalized)
 
