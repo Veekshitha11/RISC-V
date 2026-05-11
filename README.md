@@ -29,6 +29,9 @@ py main.py
 - Instructions without extension tags are skipped
 - Extension tags are treated as case-sensitive
 
+## Design Notes
+
+- Instructions were modeled as a many-to-many relationship because some instructions belong to multiple extensions.
 
 
 
