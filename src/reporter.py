@@ -12,10 +12,14 @@ def generate_extension_summary(extension_groups: dict) -> str:
 
         instructions = extension_groups[extension]
 
+        n = len(instructions)
+        word = "instruction" if n == 1 else "instructions"
+        example = sorted(instructions)[0].upper()
+
         lines.append(
             f"{extension} | "
-            f"{len(instructions)} instructions | "
-            f"e.g. {instructions[0]}"
+            f"{n} {word} | "
+            f"e.g. {example}"
         )
 
     return "\n".join(lines)
@@ -42,7 +46,7 @@ def generate_multi_extension_report(
         ):
 
             lines.append(
-                f"{instruction} -> "
+                f"{instruction.upper()} -> "
                 f"{', '.join(extensions)}"
             )
 
