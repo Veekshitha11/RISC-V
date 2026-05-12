@@ -1,7 +1,8 @@
-# src/cross_reference.py
-
 """
-Cross-reference normalized extension names between datasets.
+Compare extension sets from ``instr_dict.json`` (after canonicalization)
+with names scraped from the ISA manual. ``json_only`` usually means the
+landscape lists an extension the manual scan did not pick up yet—often
+newer or vendor-specific packs, or limits of regex on AsciiDoc.
 """
 
 from src.normalizer import (
@@ -12,6 +13,12 @@ from src.normalizer import (
 def normalize_json_extensions(
     extension_groups: dict,
 ) -> set:
+    """
+    Build the set of canonical extension names implied by Tier 1 grouping.
+
+    ``extension_groups`` keys are raw tags (e.g. ``rv_zba``). Tags that
+    normalize to ``""`` are skipped so bad keys do not enter the set.
+    """
 
     normalized_extensions = set()
 
@@ -37,6 +44,13 @@ def cross_reference_extensions(
     json_extensions: set,
     manual_extensions: set,
 ) -> dict:
+    """
+    Split two canonical-name sets into matched, JSON-only, and manual-only.
+
+    Both inputs must already use the same normalization as
+    ``normalize_extension_name``. Returns dict keys ``matched``,
+    ``json_only``, and ``manual_only`` (each a set, possibly empty).
+    """
 
     matched = (
         json_extensions &
@@ -63,6 +77,12 @@ def cross_reference_extensions(
 def generate_cross_reference_report(
     cross_reference_results: dict,
 ) -> str:
+    """
+    Format ``cross_reference_results`` as a stable, sorted text report.
+
+    Expects keys ``matched``, ``json_only``, ``manual_only``. Includes the
+    assignment-style count line plus three labeled sections.
+    """
 
     matched = sorted(
         cross_reference_results["matched"]
