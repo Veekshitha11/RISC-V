@@ -46,7 +46,11 @@ A metadata exploration and reconciliation tool for parsing and analyzing RISC-V 
    pytest
    ```
 
-Instruction metadata is read from `data/instr_dict.json` (from the extensions landscape project). Replace or refresh that file if you need a newer snapshot.
+Instruction metadata is read from `data/instr_dict.json`. The landscape project that publishes it is:
+
+https://github.com/rpsene/riscv-extensions-landscape
+
+Copy or download `instr_dict.json` into `data/` when you want a newer snapshot.
 
 ---
 
