@@ -8,36 +8,28 @@ based on shared instructions.
 from collections import defaultdict
 from itertools import combinations
 
+from src.parser import get_extensions
+
 
 def build_extension_graph(
     instruction_data: dict,
 ) -> dict:
 
-    graph = defaultdict(set)
+    graph = defaultdict(lambda: defaultdict(set))
 
-    for instruction_info in (
-        instruction_data.values()
-    ):
+    for mnemonic, instruction_info in instruction_data.items():
 
-        extensions = instruction_info.get(
-            "extension",
-            []
-        )
+        extensions = get_extensions(instruction_info)
 
-        # graph relationships only matter
-        # when instructions belong to
-        # multiple extensions
         if len(extensions) < 2:
             continue
 
-        # create pairwise relationships
-        for ext1, ext2 in combinations(
-            extensions,
-            2,
-        ):
+        name = mnemonic.lower()
+        uniq = sorted(set(extensions))
 
-            graph[ext1].add(ext2)
-            graph[ext2].add(ext1)
+        for ext1, ext2 in combinations(uniq, 2):
+            graph[ext1][ext2].add(name)
+            graph[ext2][ext1].add(name)
 
     return graph
 
@@ -56,13 +48,19 @@ def generate_graph_report(
 
     for extension in sorted(graph):
 
-        connected_extensions = sorted(
-            graph[extension]
-        )
+        neighbors = graph[extension]
+        nbr_list = sorted(neighbors)
 
         lines.append(
-            f"{extension} -> "
-            f"{', '.join(connected_extensions)}"
+            f"{extension} | {len(nbr_list)} neighbor(s)"
         )
+
+        for nbr in nbr_list:
+            shared = ", ".join(
+                m.upper() for m in sorted(neighbors[nbr])
+            )
+            lines.append(
+                f"  -> {nbr} | shared: {shared}"
+            )
 
     return "\n".join(lines)
