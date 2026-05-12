@@ -3,6 +3,7 @@
 from src.cross_reference import (
     cross_reference_extensions,
     generate_cross_reference_report,
+    normalize_json_extensions,
 )
 
 
@@ -52,3 +53,26 @@ def test_count_line_in_report():
     text = generate_cross_reference_report(results)
 
     assert "1 matched, 1 in JSON only, 1 in manual only" in text
+
+
+def test_normalize_json_extensions_uses_canonical_names():
+
+    extension_groups = {
+        "rv_i": ["add"],
+        "rv_zba": ["sh1add"],
+    }
+
+    assert normalize_json_extensions(extension_groups) == {
+        "I",
+        "Zba",
+    }
+
+
+def test_normalize_json_extensions_skips_empty_canonical():
+
+    extension_groups = {
+        "rv_i": ["add"],
+        "": ["bad"],
+    }
+
+    assert normalize_json_extensions(extension_groups) == {"I"}
