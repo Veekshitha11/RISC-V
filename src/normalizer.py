@@ -1,13 +1,17 @@
-
 """
-Normalize extension names across different metadata sources.
+Convert RISC-V extension labels from JSON and the ISA manual into one
+canonical string so two sources can be compared set-to-set. Handles
+``rv_*`` / ``rv32_*`` / ``rv64_*`` prefixes and special cases like
+``rv64_i`` (RV64I) versus base ``rv_i`` (I).
 """
 
 import re
 from typing import Optional
 
 
-# Single-letter ISA / common manual tokens after slug strip (rv_i -> i)
+# Title-casing or regex-only rules break single-letter bases: e.g. ``rv_i``
+# must become ``I``, not ``Zi``. Unknown letters still map here when the
+# slug is exactly one character after prefix strip.
 _BASE_SLUG = {
     "i": "I",
     "m": "M",
@@ -37,8 +41,11 @@ _BASE_SLUG = {
 
 def normalize_extension_name(extension_name: str) -> str:
     """
-    Map JSON tags and manual tokens to one canonical string for
-    comparison (e.g. rv_zba and Zba -> Zba, rv_i and I -> I).
+    Return the canonical extension name for cross-referencing.
+
+    ``extension_name`` is a tag or manual token (e.g. ``rv_zba``,
+    ``Zba``). Returns ``""`` for ``None``, empty, or whitespace-only
+    input. ``rv64_i`` becomes ``RV64I``; ``rv_i`` becomes ``I``.
     """
 
     if extension_name is None:
@@ -90,6 +97,10 @@ def normalize_extension_name(extension_name: str) -> str:
     return lower[0].upper() + lower[1:] if lower else ""
 
 
-# Alias for tests / API clarity
 def normalize_tag(tag: str) -> str:
+    """
+    Same as ``normalize_extension_name``; use when the input is known
+    to be a JSON extension tag. ``None`` and blank inputs return ``""``.
+    """
+
     return normalize_extension_name(tag)
