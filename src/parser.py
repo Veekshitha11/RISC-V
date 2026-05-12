@@ -11,6 +11,22 @@ def load_instruction_data(file_path: str) -> dict:
         return json.load(file)
 
 
+def get_extensions(instruction_info: dict) -> list:
+
+    ext = instruction_info.get("extension", [])
+
+    if ext is None:
+        return []
+
+    if isinstance(ext, str):
+        return [ext]
+
+    if isinstance(ext, list):
+        return ext
+
+    return []
+
+
 # group instructions by extension
 def group_by_extension(instruction_data: dict) -> dict:
 
@@ -18,15 +34,14 @@ def group_by_extension(instruction_data: dict) -> dict:
 
     for instruction_name, instruction_info in instruction_data.items():
 
-        extensions = instruction_info.get("extension", [])
+        extensions = get_extensions(instruction_info)
 
-        # skip malformed entries with no extension tags
         if not extensions:
             continue
 
         for extension in extensions:
             extension_groups[extension].append(
-                instruction_name.upper()
+                instruction_name.lower()
             )
 
     return extension_groups
@@ -41,13 +56,12 @@ def find_multi_extension_instructions(
 
     for instruction_name, instruction_info in instruction_data.items():
 
-        extensions = instruction_info.get("extension", [])
+        extensions = get_extensions(instruction_info)
 
-        # some instructions may belong to multiple extensions
         if len(extensions) > 1:
 
             multi_extension_instructions[
-                instruction_name.upper()
+                instruction_name.lower()
             ] = extensions
 
     return multi_extension_instructions
