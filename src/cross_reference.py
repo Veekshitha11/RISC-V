@@ -23,6 +23,9 @@ def normalize_json_extensions(
             )
         )
 
+        if not normalized:
+            continue
+
         normalized_extensions.add(
             normalized
         )
@@ -92,6 +95,24 @@ def generate_cross_reference_report(
     lines.append(
         f"Manual Only Extensions: {len(manual_only)}"
     )
+
+    lines.append("")
+
+    lines.append(
+        f"{len(matched)} matched, {len(json_only)} in JSON only, "
+        f"{len(manual_only)} in manual only"
+    )
+
+    lines.append("")
+
+    lines.append(
+        "Matched Extensions"
+    )
+
+    lines.append("-" * 55)
+
+    for extension in matched:
+        lines.append(extension)
 
     lines.append("")
 
