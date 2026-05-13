@@ -1,4 +1,3 @@
-# main.py
 import argparse
 import os
 import subprocess
@@ -33,7 +32,22 @@ from src.cross_reference import (
 )
 
 
+INSTR_DICT_PATH = "data/instr_dict.json"
+MANUAL_ROOT = Path("riscv-isa-manual")
+MANUAL_SRC = MANUAL_ROOT / "src"
+OUTPUT_DIR = "output"
+ISA_MANUAL_REPO = "https://github.com/riscv/riscv-isa-manual"
+
+
 def main():
+    """
+    Entry point for all three tiers.
+
+    Tier 1 (parsing) always runs.
+    Tier 2 (ISA manual cross-reference) runs unless --skip-tier2 is passed.
+    Tier 3 (graph) always runs alongside Tier 1.
+    Results are printed to stdout and saved under output/.
+    """
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -48,14 +62,11 @@ def main():
     )
     args = parser.parse_args()
 
-    os.makedirs("output", exist_ok=True)
-
-    manual_root = Path("riscv-isa-manual")
-    manual_src = manual_root / "src"
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
 
     # Tier 1 parsing pipeline
     instruction_data = load_instruction_data(
-        "data/instr_dict.json"
+        INSTR_DICT_PATH
     )
 
     extension_groups = group_by_extension(
@@ -87,25 +98,25 @@ def main():
     save_report_to_file(
         extension_summary,
         multi_extension_report,
-        "output/summary.txt",
+        f"{OUTPUT_DIR}/summary.txt",
     )
 
     if not args.skip_tier2:
 
-        if not manual_src.is_dir():
+        if not MANUAL_SRC.is_dir():
 
             if args.auto_clone:
                 subprocess.run(
                     [
                         "git",
                         "clone",
-                        "https://github.com/riscv/riscv-isa-manual",
-                        str(manual_root),
+                        ISA_MANUAL_REPO,
+                        str(MANUAL_ROOT),
                     ],
                     check=True,
                 )
 
-            if not manual_src.is_dir():
+            if not MANUAL_SRC.is_dir():
                 print(
                     "ERROR: ISA manual not found at riscv-isa-manual/src.\n"
                     "Clone it with:\n"
@@ -118,7 +129,7 @@ def main():
 
         manual_extensions = (
             extract_extensions_from_manual(
-                str(manual_src)
+                str(MANUAL_SRC)
             )
         )
 
@@ -145,7 +156,7 @@ def main():
         print(cross_reference_report)
 
         with open(
-            "output/cross_reference_report.txt",
+            f"{OUTPUT_DIR}/cross_reference_report.txt",
             "w",
             encoding="utf-8",
         ) as file:
@@ -177,7 +188,7 @@ def main():
     print(graph_report)
 
     with open(
-        "output/extension_graph.txt",
+        f"{OUTPUT_DIR}/extension_graph.txt",
         "w",
         encoding="utf-8",
     ) as file:
