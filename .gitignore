@@ -17,7 +17,7 @@ venv/
 Thumbs.db
 
 # Generated outputs
-output/*.txt
+output/
 
 # External repository
 riscv-isa-manual/
