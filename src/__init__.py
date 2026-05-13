@@ -1,4 +1,3 @@
-# src package
 
 """
 src — RISC-V Instruction Set Explorer source package.
