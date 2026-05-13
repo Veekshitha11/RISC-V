@@ -36,3 +36,6 @@ def test_uppercase_z_extension():
 
 def test_none_returns_empty():
     assert normalize_extension_name(None) == ""
+
+def test_rv_zknh():
+    assert normalize_extension_name("rv_zknh") == "Zknh"
