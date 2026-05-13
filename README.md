@@ -5,46 +5,52 @@
 A metadata exploration and reconciliation tool for parsing and analyzing RISC-V instruction-extension relationships from the RISC-V Extensions Landscape repository and the official RISC-V ISA manual.
 
 ---
-
 ## Setup and run
 
-1. **Clone the ISA manual** (required for Tier 2). From the project root:
+1. **Clone this repository**:
 
-   ```bash
+```bash
+   git clone https://github.com/Veekshitha11/RISC-V.git
+   cd RISC-V
+```
+
+2. **Install dependencies**:
+
+```bash
+   pip install -r requirements.txt
+```
+
+3. **Clone the ISA manual** (required for Tier 2):
+
+```bash
    git clone https://github.com/riscv/riscv-isa-manual
-   ```
+```
 
    You should have `riscv-isa-manual/src/` with `.adoc` files before running Tier 2.
 
-2. **Install dependencies** (uses `pytest` from `requirements.txt`):
+4. **Run the program** (Tier 1 + Tier 2 + Tier 3 in one command):
 
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run the program** (Tier 1 + Tier 2 + Tier 3 in one command):
-
-   ```bash
+```bash
    python main.py
-   ```
+```
 
-   - **Tier 1 only** (no manual on disk):  
+   - **Tier 1 only** (no manual on disk):
 
-     ```bash
+```bash
      python main.py --skip-tier2
-     ```
+```
 
-   - **Clone the manual automatically** if `riscv-isa-manual/src` is missing:  
+   - **Clone the manual automatically** if `riscv-isa-manual/src` is missing:
 
-     ```bash
+```bash
      python main.py --auto-clone
-     ```
+```
 
-4. **Tests**:
+5. **Tests**:
 
-   ```bash
+```bash
    pytest
-   ```
+```
 
 Instruction metadata is read from `data/instr_dict.json`. The landscape project that publishes it is:
 
@@ -140,6 +146,7 @@ rv_zbb | 1 neighbor(s)
 - Instructions are modeled as many-to-many relationships between mnemonics and extension tags.
 - ISA manual extraction uses **lightweight regex** on `.adoc` text instead of a full AsciiDoc parser; a small noise list and tight patterns reduce false positives.
 - Report generation is separated from parsing logic for modularity.
+- The **extension relationship graph is built instruction-first**: for each instruction belonging to two or more extensions, an edge is added between every pair of those extensions, and the shared mnemonic is recorded on that edge. Building extension-first (iterating over extension pairs) would not naturally surface the shared instruction evidence.
 
 ---
 
