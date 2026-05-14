@@ -47,6 +47,11 @@ def extract_extensions_from_manual(
     noise_lower = {
         "the", "this", "for", "in", "note", "section", "table",
         "type", "base", "mode", "hart", "trap",
+        # Author surnames from ISA manual contributor lists that match
+        # Z-extension and S-extension patterns and cause false positives
+        "zabrocki", "zandijk", "zhang", "zhao", "zhou", "zimmer",
+        "zack", "zane", "zara", "scheid", "schmidt", "shaked",
+        "shanbhogue", "scott", "shadow", "shall", "since",
     }
 
     extension_names = set()
