@@ -114,6 +114,9 @@ rv_zvqbdot8i | 2 instructions | e.g. VQBDOTS_VV
 rv_zvqdotq | 7 instructions | e.g. VQDOT_VV
 rv_zvqldot8i | 2 instructions | e.g. VQLDOTS_VV
 rv_zvzip | 5 instructions | e.g. VPAIRE_VV
+-------------------------------------------------------
+Total extensions:    114
+Total instructions:  1343
 
 
 Instructions With Multiple Extensions

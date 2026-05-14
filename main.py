@@ -206,6 +206,14 @@ def main():
 
         file.write(graph_report)
 
+    dot_output = generate_dot_output(extension_graph)
+    with open(
+        f"{OUTPUT_DIR}/extension_graph.dot",
+        "w",
+        encoding="utf-8",
+    ) as file:
+
+        file.write(dot_output) 
 
 if __name__ == "__main__":
     main()
