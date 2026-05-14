@@ -41,6 +41,39 @@ def build_extension_graph(
 
     return graph
 
+def generate_dot_output(graph: dict) -> str:
+    """
+    Convert the extension graph to GraphViz DOT format.
+
+    The resulting string can be saved as a .dot file and rendered with
+    GraphViz (dot -Tpng extension_graph.dot -o graph.png) or pasted into
+    https://graphviz.online for instant visualization.
+
+    Each edge label shows the number of shared instructions.
+    Only one direction of each undirected edge is emitted (A -- B where A < B).
+    """
+
+    lines = ["graph extension_graph {"]
+    lines.append("    graph [overlap=false, splines=true];")
+    lines.append("    node [shape=box, fontsize=10];")
+
+    seen = set()
+    for ext in sorted(graph.keys()):
+        for neighbor in sorted(graph[ext].keys()):
+            pair = tuple(sorted([ext, neighbor]))
+            if pair in seen:
+                continue
+            seen.add(pair)
+            shared_count = len(graph[ext][neighbor])
+            lines.append(
+                f'    "{pair[0]}" -- "{pair[1]}" '
+                f'[label="{shared_count}"];'
+            )
+
+    lines.append("}")
+    return "\n".join(lines)
+
+
 
 def generate_graph_report(
     graph: dict,
