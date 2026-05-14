@@ -35,6 +35,13 @@ def generate_extension_summary(extension_groups: dict) -> str:
             f"e.g. {example}"
         )
 
+    total_instructions = sum(
+        len(v) for v in extension_groups.values()
+    )
+    lines.append("-" * 55)
+    lines.append(f"Total extensions:    {len(extension_groups)}")
+    lines.append(f"Total instructions:  {total_instructions}")
+
     return "\n".join(lines)
 
 
