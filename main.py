@@ -7,6 +7,7 @@ from pathlib import Path
 from src.graph_generator import (
     build_extension_graph,
     generate_graph_report,
+    generate_dot_output,
 )
 
 from src.parser import (
@@ -110,6 +111,7 @@ def main():
                     [
                         "git",
                         "clone",
+                        "--depth", "1",
                         ISA_MANUAL_REPO,
                         str(MANUAL_ROOT),
                     ],
@@ -162,6 +164,15 @@ def main():
         ) as file:
 
             file.write(cross_reference_report)
+
+        dot_output = generate_dot_output(extension_graph)
+        with open(
+        f"{OUTPUT_DIR}/extension_graph.dot",
+        "w",
+        encoding="utf-8",
+        ) as file:
+
+            file.write(dot_output)    
 
     else:
 
