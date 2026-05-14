@@ -165,15 +165,6 @@ def main():
 
             file.write(cross_reference_report)
 
-        dot_output = generate_dot_output(extension_graph)
-        with open(
-        f"{OUTPUT_DIR}/extension_graph.dot",
-        "w",
-        encoding="utf-8",
-        ) as file:
-
-            file.write(dot_output)    
-
     else:
 
         print()
@@ -213,7 +204,8 @@ def main():
         encoding="utf-8",
     ) as file:
 
-        file.write(dot_output) 
+        file.write(dot_output)
+
 
 if __name__ == "__main__":
     main()
