@@ -1,4 +1,5 @@
 ![CI](https://github.com/Veekshitha11/RISC-V/actions/workflows/ci.yml/badge.svg)
+![Coverage](https://img.shields.io/badge/coverage-74%25-brightgreen)
 # RISC-V Instruction Set Explorer
 
 ## Project Description
