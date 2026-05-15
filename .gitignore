@@ -20,4 +20,7 @@ Thumbs.db
 output/
 
 # External repository
-riscv-isa-manual/.coverage
+riscv-isa-manual/
+
+# Coverage reports
+.coverage
