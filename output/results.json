@@ -1,0 +1,16 @@
+{
+  "tier1": {
+    "total_extensions": 114,
+    "total_instructions": 1343,
+    "multi_extension_count": 73
+  },
+  "tier3": {
+    "graph_nodes": 32,
+    "graph_edges": 57
+  },
+  "tier2": {
+    "matched": 58,
+    "json_only": 28,
+    "manual_only": 84
+  }
+}

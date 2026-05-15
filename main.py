@@ -1,4 +1,5 @@
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -205,7 +206,45 @@ def main():
     ) as file:
 
         file.write(dot_output)
+    
+    results_summary = {
+        "tier1": {
+            "total_extensions": len(extension_groups),
+            "total_instructions": sum(
+                len(v) for v in extension_groups.values()
+            ),
+            "multi_extension_count": len(
+                multi_extension_instructions
+            ),
+        },
+        "tier3": {
+            "graph_nodes": len(extension_graph),
+            "graph_edges": sum(
+                len(neighbors)
+                for neighbors in extension_graph.values()
+            ) // 2,
+        },
+    }
 
+    if not args.skip_tier2:
+        results_summary["tier2"] = {
+            "matched": len(
+                cross_reference_results["matched"]
+            ),
+            "json_only": len(
+                cross_reference_results["json_only"]
+            ),
+            "manual_only": len(
+                cross_reference_results["manual_only"]
+            ),
+        }
+
+    with open(
+        f"{OUTPUT_DIR}/results.json",
+        "w",
+        encoding="utf-8",
+    ) as file:
+        json.dump(results_summary, file, indent=2)
 
 if __name__ == "__main__":
     main()
