@@ -92,11 +92,11 @@ SHA256SIG0 -> rv_zknh, rv_zkn, rv_zk
 ```text
 Cross Reference Summary
 -------------------------------------------------------
-Matched Extensions: 57
-JSON Only Extensions: 29
-Manual Only Extensions: 85
+Matched Extensions: 68
+JSON Only Extensions: 18
+Manual Only Extensions: 74
 
-57 matched, 29 in JSON only, 85 in manual only
+68 matched, 18 in JSON only, 74 in manual only
 
 Matched Extensions
 -------------------------------------------------------
@@ -109,10 +109,12 @@ M
 Zba
 Zbb
 Zicsr
+Svinval_h (fuzzy)
 ...
 ```
 
 Numbers depend on your `instr_dict.json` snapshot and ISA manual revision.
+Fuzzy-matched extensions are annotated with `(fuzzy)` in the report.
 
 **Tier 3 — graph (excerpt)**
 
@@ -133,12 +135,15 @@ rv_zbc | 4 neighbor(s)
 A GraphViz DOT file is also written to `output/extension_graph.dot`
 and can be rendered at https://graphviz.online
 
+![Extension Relationship Graph](output/extension_graph.png)
+
 ---
 
 ## What "JSON only" and "manual only" mean
 
-- **JSON only** — An extension tag appears in `instr_dict.json` (after normalization), but no matching extension name was found in the scanned ISA manual `.adoc` files. Often newer or vendor-specific extensions, or limits of regex extraction.
-- **Manual only** — A name was picked up from the manual, but no instruction in your JSON is tagged with that extension after normalization. Can be ratified chapters not in the snapshot, or false positives from loose patterns.
+- **JSON only** — An extension tag appears in `instr_dict.json` (after normalization and fuzzy matching), but no sufficiently similar name was found in the scanned ISA manual `.adoc` files. Often newer or vendor-specific extensions not yet ratified, or limits of regex extraction.
+- **Manual only** — A name was picked up from the manual, but no instruction in your JSON is tagged with that extension after normalization and fuzzy matching. Can be ratified chapters not in the snapshot, or false positives from loose patterns.
+- **Fuzzy matched** — Extensions that did not exactly match after normalization but are sufficiently similar (Levenshtein similarity ≥ 0.75). These appear in the matched section annotated with `(fuzzy)`.
 
 ---
 
@@ -155,12 +160,12 @@ and can be rendered at https://graphviz.online
 
 - Extract extension references from ISA manual AsciiDoc files
 - Normalize extension naming across repositories
-- Cross-reference extension metadata between datasets
+- Cross-reference extension metadata between datasets using exact and fuzzy matching
 - Report matched, JSON-only, and manual-only extensions with count summary
 
 ### Tier 3
 
-- Unit tests using `pytest`
+- 75 unit tests using `pytest` across all modules
 - Extension relationship graph generation (text and GraphViz DOT format)
 - Shared instruction dependency visualization
 
@@ -172,7 +177,7 @@ and can be rendered at https://graphviz.online
 - `reporter.py` → Tier 1 report generation
 - `normalizer.py` → canonical extension normalization
 - `manual_parser.py` → ISA manual extension extraction
-- `cross_reference.py` → extension reconciliation and mismatch reporting
+- `cross_reference.py` → extension reconciliation with exact and fuzzy matching
 - `graph_generator.py` → extension relationship graph generation
 
 ---
@@ -181,6 +186,7 @@ and can be rendered at https://graphviz.online
 
 - Extension names are **normalized to one canonical form** (for example `rv_zba` and `Zba` both become `Zba`) before cross-referencing so JSON and manual sets compare fairly.
 - **Single-letter base extensions** (`I`, `M`, `F`, …) use an explicit mapping table after stripping `rv_` / `rv32_` / `rv64_` prefixes. Title-casing or a generic regex alone is not enough: `rv_i` must become `I`, not `Zi`, and `rv64_i` is treated as `RV64I`, not the same as base `I`.
+- **Two-pass cross-referencing**: the first pass is an exact set intersection on canonical names. The second pass applies Levenshtein fuzzy matching on the remaining unmatched JSON extensions. Any extension with similarity ≥ 0.75 against a manual name is counted as matched and annotated with `(fuzzy)`. The threshold of 0.75 is tight enough to avoid false positives while catching real near-misses like `Svinval_h` vs `Svinval`.
 - Instructions are modeled as **many-to-many relationships** between mnemonics and extension tags. An instruction like `ANDN` belonging to five extensions is handled correctly.
 - ISA manual extraction uses **lightweight regex** on `.adoc` text instead of a full AsciiDoc parser. A noise list of common English words and known author surnames from the manual's contributor sections prevents false positives.
 - The **extension relationship graph is built instruction-first**: for each instruction belonging to two or more extensions, an edge is added between every pair of those extensions and the shared mnemonic is recorded on that edge. Building extension-first would not naturally surface the shared instruction evidence.
@@ -191,10 +197,11 @@ and can be rendered at https://graphviz.online
 
 ## Assumptions
 
-- Extension tags from JSON and tokens from the manual converge after normalization.
+- Extension tags from JSON and tokens from the manual converge after normalization and fuzzy matching.
 - Some regex extraction noise from ISA manual sources is filtered explicitly.
 - Instructions without usable extension metadata (`null`, missing key, or empty list) are skipped silently.
 - The ISA manual is not bundled in this repo — it is a runtime dependency cloned separately.
+- Fuzzy-matched extensions are annotated in the report so the distinction between exact and near-miss matches is always visible.
 
 ---
 
