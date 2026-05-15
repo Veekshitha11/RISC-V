@@ -135,7 +135,8 @@ rv_zbc | 4 neighbor(s)
 A GraphViz DOT file is also written to `output/extension_graph.dot`
 and can be rendered at https://graphviz.online
 
-.
+<img width="2266" height="813" alt="graphviz" src="https://github.com/user-attachments/assets/19342ec5-b4a3-411f-8a68-5ed94c8633dc" />
+
 
 ---
 
