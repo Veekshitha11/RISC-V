@@ -94,11 +94,11 @@ SHA256SIG0 -> rv_zknh, rv_zkn, rv_zk
 ```text
 Cross Reference Summary
 -------------------------------------------------------
-Matched Extensions: 68
-JSON Only Extensions: 18
-Manual Only Extensions: 74
+Matched Extensions: 58
+JSON Only Extensions: 28
+Manual Only Extensions: 84
 
-68 matched, 18 in JSON only, 74 in manual only
+58 matched, 28 in JSON only, 84 in manual only
 
 Matched Extensions
 -------------------------------------------------------
@@ -168,7 +168,7 @@ and can be rendered at https://graphviz.online
 
 ### Tier 3
 
-- 75 unit tests using `pytest` across all modules
+- 78 unit tests using `pytest` across all modules
 - Extension relationship graph generation (text and GraphViz DOT format)
 - Shared instruction dependency visualization
 
