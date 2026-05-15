@@ -1,0 +1,148 @@
+Extension Relationship Graph
+-------------------------------------------------------
+rv32_zk | 4 neighbor(s)
+  -> rv32_zkn | shared: AES32DSI, AES32DSMI, AES32ESI, AES32ESMI, SHA512SIG0H, SHA512SIG0L, SHA512SIG1H, SHA512SIG1L, SHA512SUM0R, SHA512SUM1R
+  -> rv32_zknd | shared: AES32DSI, AES32DSMI
+  -> rv32_zkne | shared: AES32ESI, AES32ESMI
+  -> rv32_zknh | shared: SHA512SIG0H, SHA512SIG0L, SHA512SIG1H, SHA512SIG1L, SHA512SUM0R, SHA512SUM1R
+rv32_zkn | 4 neighbor(s)
+  -> rv32_zk | shared: AES32DSI, AES32DSMI, AES32ESI, AES32ESMI, SHA512SIG0H, SHA512SIG0L, SHA512SIG1H, SHA512SIG1L, SHA512SUM0R, SHA512SUM1R
+  -> rv32_zknd | shared: AES32DSI, AES32DSMI
+  -> rv32_zkne | shared: AES32ESI, AES32ESMI
+  -> rv32_zknh | shared: SHA512SIG0H, SHA512SIG0L, SHA512SIG1H, SHA512SIG1L, SHA512SUM0R, SHA512SUM1R
+rv32_zknd | 2 neighbor(s)
+  -> rv32_zk | shared: AES32DSI, AES32DSMI
+  -> rv32_zkn | shared: AES32DSI, AES32DSMI
+rv32_zkne | 2 neighbor(s)
+  -> rv32_zk | shared: AES32ESI, AES32ESMI
+  -> rv32_zkn | shared: AES32ESI, AES32ESMI
+rv32_zknh | 2 neighbor(s)
+  -> rv32_zk | shared: SHA512SIG0H, SHA512SIG0L, SHA512SIG1H, SHA512SIG1L, SHA512SUM0R, SHA512SUM1R
+  -> rv32_zkn | shared: SHA512SIG0H, SHA512SIG0L, SHA512SIG1H, SHA512SIG1L, SHA512SUM0R, SHA512SUM1R
+rv64_zbb | 4 neighbor(s)
+  -> rv64_zbkb | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zk | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zkn | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zks | shared: ROLW, RORI, RORIW, RORW
+rv64_zbkb | 4 neighbor(s)
+  -> rv64_zbb | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zk | shared: PACKW, ROLW, RORI, RORIW, RORW
+  -> rv64_zkn | shared: PACKW, ROLW, RORI, RORIW, RORW
+  -> rv64_zks | shared: PACKW, ROLW, RORI, RORIW, RORW
+rv64_zk | 7 neighbor(s)
+  -> rv64_zbb | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zbkb | shared: PACKW, ROLW, RORI, RORIW, RORW
+  -> rv64_zkn | shared: AES64DS, AES64DSM, AES64ES, AES64ESM, AES64IM, AES64KS1I, AES64KS2, PACKW, ROLW, RORI, RORIW, RORW, SHA512SIG0, SHA512SIG1, SHA512SUM0, SHA512SUM1
+  -> rv64_zknd | shared: AES64DS, AES64DSM, AES64IM, AES64KS1I, AES64KS2
+  -> rv64_zkne | shared: AES64ES, AES64ESM, AES64KS1I, AES64KS2
+  -> rv64_zknh | shared: SHA512SIG0, SHA512SIG1, SHA512SUM0, SHA512SUM1
+  -> rv64_zks | shared: PACKW, ROLW, RORI, RORIW, RORW
+rv64_zkn | 7 neighbor(s)
+  -> rv64_zbb | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zbkb | shared: PACKW, ROLW, RORI, RORIW, RORW
+  -> rv64_zk | shared: AES64DS, AES64DSM, AES64ES, AES64ESM, AES64IM, AES64KS1I, AES64KS2, PACKW, ROLW, RORI, RORIW, RORW, SHA512SIG0, SHA512SIG1, SHA512SUM0, SHA512SUM1
+  -> rv64_zknd | shared: AES64DS, AES64DSM, AES64IM, AES64KS1I, AES64KS2
+  -> rv64_zkne | shared: AES64ES, AES64ESM, AES64KS1I, AES64KS2
+  -> rv64_zknh | shared: SHA512SIG0, SHA512SIG1, SHA512SUM0, SHA512SUM1
+  -> rv64_zks | shared: PACKW, ROLW, RORI, RORIW, RORW
+rv64_zknd | 3 neighbor(s)
+  -> rv64_zk | shared: AES64DS, AES64DSM, AES64IM, AES64KS1I, AES64KS2
+  -> rv64_zkn | shared: AES64DS, AES64DSM, AES64IM, AES64KS1I, AES64KS2
+  -> rv64_zkne | shared: AES64KS1I, AES64KS2
+rv64_zkne | 3 neighbor(s)
+  -> rv64_zk | shared: AES64ES, AES64ESM, AES64KS1I, AES64KS2
+  -> rv64_zkn | shared: AES64ES, AES64ESM, AES64KS1I, AES64KS2
+  -> rv64_zknd | shared: AES64KS1I, AES64KS2
+rv64_zknh | 2 neighbor(s)
+  -> rv64_zk | shared: SHA512SIG0, SHA512SIG1, SHA512SUM0, SHA512SUM1
+  -> rv64_zkn | shared: SHA512SIG0, SHA512SIG1, SHA512SUM0, SHA512SUM1
+rv64_zks | 4 neighbor(s)
+  -> rv64_zbb | shared: ROLW, RORI, RORIW, RORW
+  -> rv64_zbkb | shared: PACKW, ROLW, RORI, RORIW, RORW
+  -> rv64_zk | shared: PACKW, ROLW, RORI, RORIW, RORW
+  -> rv64_zkn | shared: PACKW, ROLW, RORI, RORIW, RORW
+rv_zbb | 4 neighbor(s)
+  -> rv_zbkb | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zk | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zkn | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zks | shared: ANDN, ORN, ROL, ROR, XNOR
+rv_zbc | 4 neighbor(s)
+  -> rv_zbkc | shared: CLMUL, CLMULH
+  -> rv_zk | shared: CLMUL, CLMULH
+  -> rv_zkn | shared: CLMUL, CLMULH
+  -> rv_zks | shared: CLMUL, CLMULH
+rv_zbkb | 4 neighbor(s)
+  -> rv_zbb | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zk | shared: ANDN, ORN, PACK, PACKH, ROL, ROR, XNOR
+  -> rv_zkn | shared: ANDN, ORN, PACK, PACKH, ROL, ROR, XNOR
+  -> rv_zks | shared: ANDN, ORN, PACK, PACKH, ROL, ROR, XNOR
+rv_zbkc | 4 neighbor(s)
+  -> rv_zbc | shared: CLMUL, CLMULH
+  -> rv_zk | shared: CLMUL, CLMULH
+  -> rv_zkn | shared: CLMUL, CLMULH
+  -> rv_zks | shared: CLMUL, CLMULH
+rv_zbkx | 3 neighbor(s)
+  -> rv_zk | shared: XPERM4, XPERM8
+  -> rv_zkn | shared: XPERM4, XPERM8
+  -> rv_zks | shared: XPERM4, XPERM8
+rv_zk | 8 neighbor(s)
+  -> rv_zbb | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zbc | shared: CLMUL, CLMULH
+  -> rv_zbkb | shared: ANDN, ORN, PACK, PACKH, ROL, ROR, XNOR
+  -> rv_zbkc | shared: CLMUL, CLMULH
+  -> rv_zbkx | shared: XPERM4, XPERM8
+  -> rv_zkn | shared: ANDN, CLMUL, CLMULH, ORN, PACK, PACKH, ROL, ROR, SHA256SIG0, SHA256SIG1, SHA256SUM0, SHA256SUM1, XNOR, XPERM4, XPERM8
+  -> rv_zknh | shared: SHA256SIG0, SHA256SIG1, SHA256SUM0, SHA256SUM1
+  -> rv_zks | shared: ANDN, CLMUL, CLMULH, ORN, PACK, PACKH, ROL, ROR, XNOR, XPERM4, XPERM8
+rv_zkn | 8 neighbor(s)
+  -> rv_zbb | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zbc | shared: CLMUL, CLMULH
+  -> rv_zbkb | shared: ANDN, ORN, PACK, PACKH, ROL, ROR, XNOR
+  -> rv_zbkc | shared: CLMUL, CLMULH
+  -> rv_zbkx | shared: XPERM4, XPERM8
+  -> rv_zk | shared: ANDN, CLMUL, CLMULH, ORN, PACK, PACKH, ROL, ROR, SHA256SIG0, SHA256SIG1, SHA256SUM0, SHA256SUM1, XNOR, XPERM4, XPERM8
+  -> rv_zknh | shared: SHA256SIG0, SHA256SIG1, SHA256SUM0, SHA256SUM1
+  -> rv_zks | shared: ANDN, CLMUL, CLMULH, ORN, PACK, PACKH, ROL, ROR, XNOR, XPERM4, XPERM8
+rv_zknh | 2 neighbor(s)
+  -> rv_zk | shared: SHA256SIG0, SHA256SIG1, SHA256SUM0, SHA256SUM1
+  -> rv_zkn | shared: SHA256SIG0, SHA256SIG1, SHA256SUM0, SHA256SUM1
+rv_zks | 9 neighbor(s)
+  -> rv_zbb | shared: ANDN, ORN, ROL, ROR, XNOR
+  -> rv_zbc | shared: CLMUL, CLMULH
+  -> rv_zbkb | shared: ANDN, ORN, PACK, PACKH, ROL, ROR, XNOR
+  -> rv_zbkc | shared: CLMUL, CLMULH
+  -> rv_zbkx | shared: XPERM4, XPERM8
+  -> rv_zk | shared: ANDN, CLMUL, CLMULH, ORN, PACK, PACKH, ROL, ROR, XNOR, XPERM4, XPERM8
+  -> rv_zkn | shared: ANDN, CLMUL, CLMULH, ORN, PACK, PACKH, ROL, ROR, XNOR, XPERM4, XPERM8
+  -> rv_zksed | shared: SM4ED, SM4KS
+  -> rv_zksh | shared: SM3P0, SM3P1
+rv_zksed | 1 neighbor(s)
+  -> rv_zks | shared: SM4ED, SM4KS
+rv_zksh | 1 neighbor(s)
+  -> rv_zks | shared: SM3P0, SM3P1
+rv_zvbb | 2 neighbor(s)
+  -> rv_zvkn | shared: VANDN_VV, VANDN_VX, VBREV8_V, VREV8_V, VROL_VV, VROL_VX, VROR_VI, VROR_VV, VROR_VX
+  -> rv_zvks | shared: VANDN_VV, VANDN_VX, VBREV8_V, VREV8_V, VROL_VV, VROL_VX, VROR_VI, VROR_VV, VROR_VX
+rv_zvkn | 5 neighbor(s)
+  -> rv_zvbb | shared: VANDN_VV, VANDN_VX, VBREV8_V, VREV8_V, VROL_VV, VROL_VX, VROR_VI, VROR_VV, VROR_VX
+  -> rv_zvkned | shared: VAESDF_VS, VAESDF_VV, VAESDM_VS, VAESDM_VV, VAESEF_VS, VAESEF_VV, VAESEM_VS, VAESEM_VV, VAESKF1_VI, VAESKF2_VI, VAESZ_VS
+  -> rv_zvknha | shared: VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV
+  -> rv_zvknhb | shared: VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV
+  -> rv_zvks | shared: VANDN_VV, VANDN_VX, VBREV8_V, VREV8_V, VROL_VV, VROL_VX, VROR_VI, VROR_VV, VROR_VX
+rv_zvkned | 1 neighbor(s)
+  -> rv_zvkn | shared: VAESDF_VS, VAESDF_VV, VAESDM_VS, VAESDM_VV, VAESEF_VS, VAESEF_VV, VAESEM_VS, VAESEM_VV, VAESKF1_VI, VAESKF2_VI, VAESZ_VS
+rv_zvknha | 2 neighbor(s)
+  -> rv_zvkn | shared: VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV
+  -> rv_zvknhb | shared: VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV
+rv_zvknhb | 2 neighbor(s)
+  -> rv_zvkn | shared: VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV
+  -> rv_zvknha | shared: VSHA2CH_VV, VSHA2CL_VV, VSHA2MS_VV
+rv_zvks | 4 neighbor(s)
+  -> rv_zvbb | shared: VANDN_VV, VANDN_VX, VBREV8_V, VREV8_V, VROL_VV, VROL_VX, VROR_VI, VROR_VV, VROR_VX
+  -> rv_zvkn | shared: VANDN_VV, VANDN_VX, VBREV8_V, VREV8_V, VROL_VV, VROL_VX, VROR_VI, VROR_VV, VROR_VX
+  -> rv_zvksed | shared: VSM4K_VI, VSM4R_VS, VSM4R_VV
+  -> rv_zvksh | shared: VSM3C_VI, VSM3ME_VV
+rv_zvksed | 1 neighbor(s)
+  -> rv_zvks | shared: VSM4K_VI, VSM4R_VS, VSM4R_VV
+rv_zvksh | 1 neighbor(s)
+  -> rv_zvks | shared: VSM3C_VI, VSM3ME_VV
