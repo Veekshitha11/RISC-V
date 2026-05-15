@@ -1,3 +1,4 @@
+![CI](https://github.com/Veekshitha11/RISC-V/actions/workflows/ci.yml/badge.svg)
 # RISC-V Instruction Set Explorer
 
 ## Project Description
