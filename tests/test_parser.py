@@ -110,15 +110,18 @@ def test_multi_extension_three_extensions():
     assert "andn" in multi_extension
     assert len(multi_extension["andn"]) == 3
 
+
 # --- missing branch coverage ---
 
 def test_load_instruction_data_file_not_found():
+    from src.parser import load_instruction_data
     import pytest
     with pytest.raises(FileNotFoundError):
         load_instruction_data("nonexistent_path.json")
 
 
 def test_find_multi_extension_returns_sorted():
+    from src.parser import find_multi_extension_instructions
     data = {
         "andn": {"extension": ["rv_zk", "rv_zbb", "rv_zbkb"]},
     }
