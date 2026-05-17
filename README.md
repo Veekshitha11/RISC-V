@@ -1,5 +1,5 @@
 ![CI](https://github.com/Veekshitha11/RISC-V/actions/workflows/ci.yml/badge.svg)
-![Coverage](https://img.shields.io/badge/coverage-74%25-brightgreen)
+![Coverage](https://img.shields.io/badge/coverage-88%25-brightgreen)
 # RISC-V Instruction Set Explorer
 
 ## Project Description
@@ -168,7 +168,7 @@ and can be rendered at https://graphviz.online
 
 ### Tier 3
 
-- 78 unit tests using `pytest` across all modules
+- 104 unit tests using `pytest` across all modules
 - Extension relationship graph generation (text and GraphViz DOT format)
 - Shared instruction dependency visualization
 
