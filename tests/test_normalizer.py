@@ -124,3 +124,29 @@ def test_normalize_tag_alias():
 
 def test_normalize_tag_none():
     assert normalize_tag(None) == ""
+
+# --- missing branch coverage ---
+
+def test_rv_ss_prefix():
+    assert normalize_extension_name("rv_ssaia") == "Ssaia"
+
+
+def test_rv_sv_prefix():
+    assert normalize_extension_name("rv_svpbmt") == "Svpbmt"
+
+
+def test_rv_x_prefix():
+    result = normalize_extension_name("rv_xvendor")
+    assert result == "Xvendor"
+
+
+def test_rv32_base_extension():
+    assert normalize_extension_name("rv32_i") == "I"
+
+
+def test_plain_lowercase_word():
+    assert normalize_extension_name("zba") == "Zba"
+
+
+def test_already_canonical_sm():
+    assert normalize_extension_name("Smstateen") == "Smstateen"
