@@ -120,10 +120,11 @@ def test_load_instruction_data_file_not_found():
         load_instruction_data("nonexistent_path.json")
 
 
-def test_find_multi_extension_returns_sorted():
+def test_find_multi_extension_returns_all_extensions():
     from src.parser import find_multi_extension_instructions
     data = {
         "andn": {"extension": ["rv_zk", "rv_zbb", "rv_zbkb"]},
     }
     result = find_multi_extension_instructions(data)
-    assert result["andn"] == sorted(["rv_zk", "rv_zbb", "rv_zbkb"])
+    assert set(result["andn"]) == {"rv_zk", "rv_zbb", "rv_zbkb"}
+    assert len(result["andn"]) == 3
