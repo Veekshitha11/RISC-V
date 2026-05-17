@@ -1,136 +1,98 @@
-# tests/test_reporter.py
-
-import os
-import tempfile
-from src.reporter import (
-    generate_extension_summary,
-    generate_multi_extension_report,
-    save_report_to_file,
-)
+"""
+Build human-readable Tier 1 reports: the per-extension summary table
+(assignment line format) and a separate block listing mnemonics that
+carry more than one extension tag. Writing to disk is isolated in
+``save_report_to_file`` so parsing code stays free of I/O.
+"""
 
 
-# --- generate_extension_summary ---
+def generate_extension_summary(extension_groups: dict) -> str:
+    """
+    Render the extension summary table as a single string.
 
-def test_summary_format_matches_rubric():
-    groups = {"rv_zba": ["sh1add", "sh2add", "add_uw"]}
-    text = generate_extension_summary(groups)
-    assert "rv_zba | 3 instructions | e.g. ADD_UW" in text
+    ``extension_groups`` maps raw tags to mnemonic lists (lowercase in
+    our pipeline). Uses ``1 instruction`` vs ``N instructions``, sorts
+    tags and picks the first mnemonic alphabetically for ``e.g.``,
+    uppercased for display.
+    """
 
+    lines = []
 
-def test_summary_singular():
-    groups = {"rv_zifencei": ["fence_i"]}
-    text = generate_extension_summary(groups)
-    assert "1 instruction" in text
-    assert "1 instructions" not in text
+    lines.append("Extension Summary")
+    lines.append("-" * 55)
 
+    for extension in sorted(extension_groups):
 
-def test_summary_plural():
-    groups = {"rv_zba": ["sh1add", "sh2add"]}
-    text = generate_extension_summary(groups)
-    assert "2 instructions" in text
+        instructions = extension_groups[extension]
 
+        n = len(instructions)
+        word = "instruction" if n == 1 else "instructions"
+        example = sorted(instructions)[0].upper()
 
-def test_summary_mnemonic_uppercase():
-    groups = {"rv_i": ["add"]}
-    text = generate_extension_summary(groups)
-    assert "e.g. ADD" in text
+        lines.append(
+            f"{extension} | "
+            f"{n} {word} | "
+            f"e.g. {example}"
+        )
 
+    total_instructions = sum(
+        len(v) for v in extension_groups.values()
+    )
+    lines.append("-" * 55)
+    lines.append(f"Total extensions:    {len(extension_groups)}")
+    lines.append(f"Total instructions:  {total_instructions}")
 
-def test_summary_footer_total_extensions():
-    groups = {"rv_i": ["add"], "rv_m": ["mul"]}
-    text = generate_extension_summary(groups)
-    assert "Total extensions:    2" in text
-
-
-def test_summary_footer_total_instructions():
-    groups = {"rv_i": ["add", "sub"], "rv_m": ["mul"]}
-    text = generate_extension_summary(groups)
-    assert "Total instructions:  3" in text
-
-
-def test_summary_sorted_alphabetically():
-    groups = {"rv_zba": ["sh1add"], "rv_i": ["add"]}
-    text = generate_extension_summary(groups)
-    assert text.index("rv_i") < text.index("rv_zba")
+    return "\n".join(lines)
 
 
-def test_summary_example_first_alphabetically():
-    groups = {"rv_zba": ["sh2add", "add_uw", "sh1add"]}
-    text = generate_extension_summary(groups)
-    assert "e.g. ADD_UW" in text
+def generate_multi_extension_report(
+    multi_extension_instructions: dict,
+) -> str:
+    """
+    Render the multi-extension section (separate from the summary table).
+
+    Keys are mnemonics (lowercase); each value is the raw tag list from
+    JSON. Prints ``None found`` when the dict is empty.
+    """
+
+    lines = []
+
+    lines.append(
+        "\nInstructions With Multiple Extensions"
+    )
+
+    lines.append("-" * 55)
+
+    if not multi_extension_instructions:
+        lines.append("None found")
+
+    else:
+        for instruction, extensions in (
+            multi_extension_instructions.items()
+        ):
+
+            lines.append(
+                f"{instruction.upper()} -> "
+                f"{', '.join(extensions)}"
+            )
+
+    return "\n".join(lines)
 
 
-def test_summary_empty_groups():
-    text = generate_extension_summary({})
-    assert "Total extensions:    0" in text
-    assert "Total instructions:  0" in text
+def save_report_to_file(
+    extension_summary: str,
+    multi_extension_report: str,
+    output_path: str,
+) -> None:
+    """
+    Write ``extension_summary`` and ``multi_extension_report`` to ``output_path``.
 
+    Overwrites the file if it exists. Caller must ensure the parent
+    directory exists (``main`` creates ``output/``).
+    """
 
-def test_summary_contains_divider():
-    groups = {"rv_i": ["add"]}
-    text = generate_extension_summary(groups)
-    assert "-" * 55 in text
+    with open(output_path, "w", encoding="utf-8") as file:
 
-
-# --- generate_multi_extension_report ---
-
-def test_multi_extension_report_format():
-    multi = {"andn": ["rv_zbb", "rv_zk"]}
-    text = generate_multi_extension_report(multi)
-    assert "ANDN -> rv_zbb, rv_zk" in text
-
-
-def test_multi_extension_report_uppercase_mnemonic():
-    multi = {"sha256sig0": ["rv_zknh", "rv_zkn"]}
-    text = generate_multi_extension_report(multi)
-    assert "SHA256SIG0" in text
-
-
-def test_multi_extension_report_empty():
-    text = generate_multi_extension_report({})
-    assert "None found" in text
-
-
-def test_multi_extension_report_header():
-    text = generate_multi_extension_report({})
-    assert "Instructions With Multiple Extensions" in text
-
-
-def test_multi_extension_report_multiple_entries():
-    multi = {
-        "andn": ["rv_zbb", "rv_zk"],
-        "orn": ["rv_zbb", "rv_zk"],
-    }
-    text = generate_multi_extension_report(multi)
-    assert "ANDN" in text
-    assert "ORN" in text
-
-
-# --- save_report_to_file ---
-
-def test_save_report_creates_file():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        path = os.path.join(tmpdir, "summary.txt")
-        save_report_to_file("summary", "multi", path)
-        assert os.path.exists(path)
-
-
-def test_save_report_contents():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        path = os.path.join(tmpdir, "summary.txt")
-        save_report_to_file("summary content", "multi content", path)
-        with open(path, encoding="utf-8") as f:
-            content = f.read()
-        assert "summary content" in content
-        assert "multi content" in content
-
-
-def test_save_report_overwrites_existing():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        path = os.path.join(tmpdir, "summary.txt")
-        save_report_to_file("first", "run", path)
-        save_report_to_file("second", "run", path)
-        with open(path, encoding="utf-8") as f:
-            content = f.read()
-        assert "second" in content
-        assert "first" not in content
+        file.write(extension_summary)
+        file.write("\n\n")
+        file.write(multi_extension_report)
